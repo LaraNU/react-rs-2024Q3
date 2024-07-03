@@ -1,3 +1,4 @@
-cd class-components
+# class-components/.husky/pre-commit
 
-npm run lint
+cd frontend
+npm test
