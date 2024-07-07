@@ -11,19 +11,6 @@
   align-items: center;
 }
 
-.header {
-  height: 80px;
-  background-color: #454545;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-}
-
-.second-block {
-  flex-grow: 1;
-}
-
 .footer {
   height: 80px;
 }

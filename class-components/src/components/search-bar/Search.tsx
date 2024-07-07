@@ -1,6 +1,5 @@
 import { Component } from "react";
-import "./Search.css";
-import "../App.css";
+import styles from "./Search.module.css";
 
 export default class Search extends Component {
   state = {
@@ -43,17 +42,17 @@ export default class Search extends Component {
   render() {
     return (
       <>
-        <header className="header">
-          <div className="search-field">
-            <form className="search-field" onSubmit={this.handleSubmit}>
-              <input type="text" className="search-field-input" />
-              <button type="submit" className="search-field-btn" value="search">
+        <header className={styles.header}>
+          <div className={styles.searchField}>
+            <form className={styles.searchField} onSubmit={this.handleSubmit}>
+              <input type="text" className={styles.searchFieldInput} />
+              <button type="submit" className="searchFieldBtn" value="search">
                 search
               </button>
             </form>
           </div>
         </header>
-        <div className="second-block">
+        <div className={styles.secondBlock}>
           <ul>
             {this.state.list_books.map((book) => (
               <li key={book.key}>
