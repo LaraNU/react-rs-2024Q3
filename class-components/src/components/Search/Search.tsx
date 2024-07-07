@@ -3,9 +3,11 @@ import { Component } from "react";
 import styles from "./Search.module.css";
 
 type Book = {
-  key: string;
-  title: string;
-  author_name: Array<string>;
+  id: string;
+  volumeInfo: {
+    title: string;
+    authors: string;
+  };
 };
 
 type State = {
@@ -21,7 +23,7 @@ type State = {
 
 export default class Search extends Component<unknown, State> {
   state: State = {
-    q: "",
+    q: "harry",
     fields: [],
     limit: 10,
     page: 1,
@@ -35,20 +37,20 @@ export default class Search extends Component<unknown, State> {
   componentDidMount(): void {
     const urlSearchParams = new URLSearchParams({
       q: this.state.q,
-      lang: "uk",
-      fields: "title,author_name,key",
-      page: `${1}`,
-      limit: `${10}`,
+      startIndex: `${0}`,
+      maxResults: `${10}`,
+      printType: "books",
+      projection: "lite",
     });
-
-    fetch(`https://openlibrary.org/search.json?${urlSearchParams.toString()}`)
+    const query_url = `https://www.googleapis.com/books/v1/volumes?${urlSearchParams.toString()}`;
+    fetch(query_url)
       .then((res) => {
         return res.json();
       })
       .then((data) => {
+        console.log(data.items);
         this.setState({
-          books: data.docs,
-          size: data.docs.length,
+          books: data.items,
         });
       });
   }
@@ -88,8 +90,9 @@ export default class Search extends Component<unknown, State> {
         <div className={styles.secondBlock}>
           <ul>
             {this.state.books.map((book) => (
-              <li key={book.key}>
-                {book.title} {book.author_name}
+              <li key={book.id}>
+                Title: <b>{book.volumeInfo.title}</b> <br></br> Authors:{" "}
+                {book.volumeInfo.authors}
               </li>
             ))}
           </ul>
