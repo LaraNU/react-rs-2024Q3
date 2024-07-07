@@ -1,5 +1,4 @@
-// import React from "react";
-import Search from "./components/search-bar/Search";
+import Search from "./components/Search/Search";
 import styles from "./App.module.css";
 
 function App() {
