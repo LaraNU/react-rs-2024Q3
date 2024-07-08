@@ -2,6 +2,7 @@ import type { FormEvent, ChangeEvent } from "react";
 import { Component } from "react";
 import { libraryApi } from "../../api/libraryApi";
 import Loader from "../Loader/Loader";
+import Error from "../Error/Error";
 import styles from "./Search.module.css";
 
 type Book = {
@@ -108,6 +109,7 @@ export default class Search extends Component<unknown, State> {
             </form>
           </div>
         </header>
+        <Error />
         <div className={styles.secondBlock}>
           {!this.state.loaded ? <Loader /> : false}
           <ul>
