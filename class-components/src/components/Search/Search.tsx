@@ -1,13 +1,13 @@
 import type { FormEvent, ChangeEvent } from "react";
 import { Component } from "react";
+import { libraryApi } from "../../api/libraryApi";
+import Loader from "../Loader/Loader";
 import styles from "./Search.module.css";
 
 type Book = {
-  id: string;
-  volumeInfo: {
-    title: string;
-    authors: string;
-  };
+  key: string;
+  title: string;
+  author_name: Array<string>;
 };
 
 type State = {
@@ -16,9 +16,10 @@ type State = {
   limit: number;
   page: number;
   name: string;
-  size: number;
   books: Array<Book>;
   searchValue: string;
+  loaded: boolean;
+  keyBooks: string;
 };
 
 export default class Search extends Component<unknown, State> {
@@ -29,37 +30,56 @@ export default class Search extends Component<unknown, State> {
     page: 1,
 
     name: "books",
-    size: 0,
     books: [],
     searchValue: "",
+    loaded: false,
+    keyBooks: "",
   };
 
   componentDidMount(): void {
-    const urlSearchParams = new URLSearchParams({
-      q: this.state.q,
-      startIndex: `${0}`,
-      maxResults: `${10}`,
-      printType: "books",
-      projection: "lite",
-    });
-    const query_url = `https://www.googleapis.com/books/v1/volumes?${urlSearchParams.toString()}`;
-    fetch(query_url)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data.items);
+    if (localStorage.length === 1) {
+      const key = Object.keys(localStorage).toString();
+      const dataLS = JSON.parse(localStorage.getItem(key) as string);
+
+      if (dataLS !== null) {
         this.setState({
-          books: data.items,
+          q: key,
+          books: dataLS,
         });
-      });
+      }
+    }
+
+    if (localStorage.length === 0) {
+      this.loadDataBooks();
+    }
   }
 
   componentDidUpdate(_: unknown, prevState: State) {
     if (this.state.q !== prevState.q) {
-      this.componentDidMount();
+      this.loadDataBooks();
     }
   }
+
+  loadDataBooks = () => {
+    libraryApi.getBooks(this.state.q).then((data) => {
+      this.setState({
+        q: data.q,
+        books: data.docs,
+        loaded: true,
+        keyBooks: data.q,
+      });
+
+      if (localStorage.length > 1 || localStorage.length === 1) {
+        localStorage.clear();
+        localStorage.setItem(data.q, JSON.stringify(data.docs));
+      }
+      localStorage.setItem(data.q, JSON.stringify(data.docs));
+    });
+
+    this.setState({
+      loaded: false,
+    });
+  };
 
   handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -80,6 +100,7 @@ export default class Search extends Component<unknown, State> {
                 type="text"
                 className={styles.searchFieldInput}
                 onChange={this.handleSearchChange}
+                defaultValue={Object.keys(localStorage).toString()}
               />
               <button type="submit" className="searchFieldBtn" value="search">
                 search
@@ -88,11 +109,11 @@ export default class Search extends Component<unknown, State> {
           </div>
         </header>
         <div className={styles.secondBlock}>
+          {!this.state.loaded ? <Loader /> : false}
           <ul>
             {this.state.books.map((book) => (
-              <li key={book.id}>
-                Title: <b>{book.volumeInfo.title}</b> <br></br> Authors:{" "}
-                {book.volumeInfo.authors}
+              <li key={book.key}>
+                Title: <b>{book.title}</b> <br></br> Authors: {book.author_name}
               </li>
             ))}
           </ul>

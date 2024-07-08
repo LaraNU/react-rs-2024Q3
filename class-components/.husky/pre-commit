@@ -1,4 +1,2 @@
-# class-components/.husky/pre-commit
-
 cd class-components
 npm run lint
