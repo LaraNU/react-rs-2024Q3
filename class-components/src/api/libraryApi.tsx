@@ -1,7 +1,7 @@
 const urlSearchParamsBooks = new URLSearchParams({
-  fields: "title,author_name,key",
+  fields: "title,author_name,key,isbn,availability",
   page: `${1}`,
-  limit: `${10}`,
+  limit: `${9}`,
 });
 
 export const libraryApi = {

@@ -3,12 +3,14 @@ import { Component } from "react";
 import { libraryApi } from "../../api/libraryApi";
 import Loader from "../Loader/Loader";
 import Error from "../Error/Error";
+import BookItem from "../BookItem/BookItem";
 import styles from "./Search.module.css";
 
 type Book = {
   key: string;
   title: string;
   author_name: Array<string>;
+  isbn: Array<string>;
 };
 
 type State = {
@@ -16,6 +18,7 @@ type State = {
   fields: Array<string>;
   limit: number;
   page: number;
+  isbn: string;
   name: string;
   books: Array<Book>;
   searchValue: string;
@@ -29,6 +32,7 @@ export default class Search extends Component<unknown, State> {
     fields: [],
     limit: 10,
     page: 1,
+    isbn: "",
 
     name: "books",
     books: [],
@@ -68,6 +72,11 @@ export default class Search extends Component<unknown, State> {
         books: data.docs,
         loaded: true,
         keyBooks: data.q,
+        isbn: data.docs,
+      });
+
+      data.docs.map((el) => {
+        this.setState({ isbn: el.isbn[0] });
       });
 
       if (localStorage.length > 1 || localStorage.length === 1) {
@@ -110,15 +119,18 @@ export default class Search extends Component<unknown, State> {
           </div>
         </header>
         <Error />
+        {!this.state.loaded ? <Loader /> : false}
         <div className={styles.secondBlock}>
-          {!this.state.loaded ? <Loader /> : false}
-          <ul>
-            {this.state.books.map((book) => (
-              <li key={book.key}>
-                Title: <b>{book.title}</b> <br></br> Authors: {book.author_name}
-              </li>
-            ))}
-          </ul>
+          {this.state.books.map((book) => (
+            <BookItem
+              post={{
+                title: book.title,
+                author_name: book.author_name,
+              }}
+              src={`https://covers.openlibrary.org/b/isbn/${book.isbn[0]}-L.jpg`}
+              key={book.isbn[0]}
+            />
+          ))}
         </div>
       </>
     );
