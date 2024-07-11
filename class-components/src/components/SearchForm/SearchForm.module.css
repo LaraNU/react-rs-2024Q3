@@ -1,0 +1,16 @@
+.searchField {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 0 5px;
+}
+
+.searchFieldInput {
+  display: block;
+  width: 100%;
+  max-width: 650px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 1em;
+}

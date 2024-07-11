@@ -4,13 +4,14 @@ import { libraryApi } from "../../api/libraryApi";
 import Loader from "../Loader/Loader";
 import Error from "../Error/Error";
 import BookItem from "../BookItem/BookItem";
+import SearchForm from "../SearchForm/SearchForm";
 import styles from "./Search.module.css";
 
 type Book = {
-  key: string;
-  title: string;
-  author_name: Array<string>;
-  isbn: Array<string>;
+  key: string | "not";
+  title: string | "not";
+  author_name: Array<string> | ["not"];
+  isbn: Array<string> | ["not"];
 };
 
 type State = {
@@ -77,9 +78,7 @@ export default class Search extends Component<unknown, State> {
         isbn: data.docs,
       });
 
-      data.docs.map((el) => {
-        this.setState({ isbn: el.isbn[0] });
-      });
+      console.log(data.docs);
 
       localStorage.setItem("lastSearch", data.q);
     });
@@ -98,22 +97,16 @@ export default class Search extends Component<unknown, State> {
     this.setState({ searchValue: event.target.value });
   };
 
+  handleSearchValueSubmit = (value: string) => {
+    this.setState({ q: value });
+  };
+
   render() {
     return (
       <>
         <header className={styles.header}>
           <div className={styles.searchField}>
-            <form className={styles.searchField} onSubmit={this.handleSubmit}>
-              <input
-                type="text"
-                className={styles.searchFieldInput}
-                onChange={this.handleSearchChange}
-                defaultValue={this.state.localStorageData}
-              />
-              <button type="submit" className="searchFieldBtn" value="search">
-                search
-              </button>
-            </form>
+            <SearchForm onSearchValueSubmit={this.handleSearchValueSubmit} />
           </div>
         </header>
         <Error />
