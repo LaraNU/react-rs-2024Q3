@@ -21,11 +21,12 @@ type State = {
   searchValue: string;
   loaded: boolean;
   keyBooks: string;
+  localStorageData: string;
 };
 
 export default class Search extends Component<unknown, State> {
   state: State = {
-    q: "harry",
+    q: "",
     fields: [],
     limit: 10,
     page: 1,
@@ -35,34 +36,35 @@ export default class Search extends Component<unknown, State> {
     searchValue: "",
     loaded: false,
     keyBooks: "",
+    localStorageData: "",
   };
 
   componentDidMount(): void {
-    if (localStorage.length === 1) {
-      const key = Object.keys(localStorage).toString();
-      const dataLS = JSON.parse(localStorage.getItem(key) as string);
+    const valueFromLocalStorage = localStorage.getItem("lastSearch");
 
-      if (dataLS !== null) {
+    if (valueFromLocalStorage) {
+      this.loadDataBooks(valueFromLocalStorage);
+      this.setState({ localStorageData: valueFromLocalStorage });
+    } else {
+      libraryApi.getBooks("harry").then((data) => {
         this.setState({
-          q: key,
-          books: dataLS,
+          q: data.q,
+          books: data.docs,
+          loaded: true,
+          keyBooks: data.q,
         });
-      }
-    }
-
-    if (localStorage.length === 0) {
-      this.loadDataBooks();
+      });
     }
   }
 
   componentDidUpdate(_: unknown, prevState: State) {
     if (this.state.q !== prevState.q) {
-      this.loadDataBooks();
+      this.loadDataBooks(this.state.q);
     }
   }
 
-  loadDataBooks = () => {
-    libraryApi.getBooks(this.state.q).then((data) => {
+  loadDataBooks = (searchValueLS: string) => {
+    libraryApi.getBooks(searchValueLS).then((data) => {
       this.setState({
         q: data.q,
         books: data.docs,
@@ -70,11 +72,7 @@ export default class Search extends Component<unknown, State> {
         keyBooks: data.q,
       });
 
-      if (localStorage.length > 1 || localStorage.length === 1) {
-        localStorage.clear();
-        localStorage.setItem(data.q, JSON.stringify(data.docs));
-      }
-      localStorage.setItem(data.q, JSON.stringify(data.docs));
+      localStorage.setItem("lastSearch", data.q);
     });
 
     this.setState({
@@ -101,7 +99,7 @@ export default class Search extends Component<unknown, State> {
                 type="text"
                 className={styles.searchFieldInput}
                 onChange={this.handleSearchChange}
-                defaultValue={Object.keys(localStorage).toString()}
+                defaultValue={this.state.localStorageData}
               />
               <button type="submit" className="searchFieldBtn" value="search">
                 search
