@@ -1,10 +1,10 @@
-import SearchPageCopy from "./components/Search/SearchPage";
+import SearchPage from "./components/SearchPage/SearchPage";
 import styles from "./App.module.css";
 
 function App() {
   return (
     <div className={styles.wrapper}>
-      <SearchPageCopy />
+      <SearchPage />
       <footer className={styles.footer}></footer>
     </div>
   );
