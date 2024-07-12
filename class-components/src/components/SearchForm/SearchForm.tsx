@@ -6,7 +6,8 @@ type Props = {
 };
 
 const SearchForm = ({ onSearchValueSubmit }: Props) => {
-  const [inputValue, setInputValue] = useState("");
+  const valueFromLocalStorage = localStorage.getItem("lastSearch");
+  const [inputValue, setInputValue] = useState(valueFromLocalStorage || "");
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -23,7 +24,7 @@ const SearchForm = ({ onSearchValueSubmit }: Props) => {
         type="text"
         className={styles.searchFieldInput}
         onChange={handleSearchChange}
-        defaultValue={inputValue}
+        value={inputValue}
       />
       <button type="submit" className="searchFieldBtn" value="search">
         search

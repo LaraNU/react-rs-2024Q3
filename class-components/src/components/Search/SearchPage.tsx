@@ -1,5 +1,4 @@
-import type { FormEvent, ChangeEvent } from "react";
-import { Component } from "react";
+import { useState, useEffect } from "react";
 import { libraryApi } from "../../api/libraryApi";
 import Loader from "../Loader/Loader";
 import Error from "../Error/Error";
@@ -14,116 +13,71 @@ type Book = {
   isbn: Array<string> | ["not"];
 };
 
-type State = {
-  q: string;
-  fields: Array<string>;
-  limit: number;
-  page: number;
-  isbn: string;
-  name: string;
-  books: Array<Book>;
-  searchValue: string;
-  loaded: boolean;
-  keyBooks: string;
-  localStorageData: string;
-};
+const SearchPage = () => {
+  const [q, setQ] = useState<string>("");
+  // const [limit, setLimit] = useState<number>(10);
+  // const [page, setPage] = useState<number>(1);
+  const [books, setBooks] = useState<Array<Book>>([]);
+  const [loaded, setLoaded] = useState<boolean>(false);
 
-export default class Search extends Component<unknown, State> {
-  state: State = {
-    q: "",
-    fields: [],
-    limit: 10,
-    page: 1,
-    isbn: "",
-
-    name: "books",
-    books: [],
-    searchValue: "",
-    loaded: false,
-    keyBooks: "",
-    localStorageData: "",
-  };
-
-  componentDidMount(): void {
+  useEffect(() => {
     const valueFromLocalStorage = localStorage.getItem("lastSearch");
 
     if (valueFromLocalStorage) {
-      this.loadDataBooks(valueFromLocalStorage);
-      this.setState({ localStorageData: valueFromLocalStorage });
+      loadDataBooks(valueFromLocalStorage);
     } else {
       libraryApi.getBooks("harry").then((data) => {
-        this.setState({
-          q: data.q,
-          books: data.docs,
-          loaded: true,
-          keyBooks: data.q,
-        });
+        setQ(data.q);
+        setBooks(data.docs);
+        setLoaded(true);
       });
     }
-  }
+  }, []);
 
-  componentDidUpdate(_: unknown, prevState: State) {
-    if (this.state.q !== prevState.q) {
-      this.loadDataBooks(this.state.q);
+  useEffect(() => {
+    if (q) {
+      loadDataBooks(q);
     }
-  }
+  }, [q]);
 
-  loadDataBooks = (searchValueLS: string) => {
+  const loadDataBooks = (searchValueLS: string) => {
+    setLoaded(false);
     libraryApi.getBooks(searchValueLS).then((data) => {
-      this.setState({
-        q: data.q,
-        books: data.docs,
-        loaded: true,
-        keyBooks: data.q,
-        isbn: data.docs,
-      });
-
-      console.log(data.docs);
+      setQ(data.q);
+      setBooks(data.docs);
+      setLoaded(true);
 
       localStorage.setItem("lastSearch", data.q);
     });
-
-    this.setState({
-      loaded: false,
-    });
   };
 
-  handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    this.setState({ q: this.state.searchValue.trim() });
+  const handleSearchValueSubmit = (value: string) => {
+    setQ(value);
   };
 
-  handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchValue: event.target.value });
-  };
-
-  handleSearchValueSubmit = (value: string) => {
-    this.setState({ q: value });
-  };
-
-  render() {
-    return (
-      <>
-        <header className={styles.header}>
-          <div className={styles.searchField}>
-            <SearchForm onSearchValueSubmit={this.handleSearchValueSubmit} />
-          </div>
-        </header>
-        <Error />
-        {!this.state.loaded ? <Loader /> : false}
-        <div className={styles.secondBlock}>
-          {this.state.books.map((book) => (
-            <BookItem
-              post={{
-                title: book.title,
-                author_name: book.author_name,
-              }}
-              src={`https://covers.openlibrary.org/b/isbn/${book.isbn[0]}-L.jpg`}
-              key={book.isbn[0]}
-            />
-          ))}
+  return (
+    <>
+      <header className={styles.header}>
+        <div className={styles.searchField}>
+          <SearchForm onSearchValueSubmit={handleSearchValueSubmit} />
         </div>
-      </>
-    );
-  }
-}
+      </header>
+      <Error />
+      {!loaded ? <Loader /> : null}
+      <div className={styles.secondBlock}>
+        {books.map((book) => (
+          <BookItem
+            post={{
+              title: book.title,
+              author_name: book.author_name,
+            }}
+            src={`https://covers.openlibrary.org/b/isbn/${book.isbn[0]}-L.jpg`}
+            key={book.isbn[0]}
+          />
+        ))}
+      </div>
+    </>
+  );
+};
+
+export default SearchPage;
