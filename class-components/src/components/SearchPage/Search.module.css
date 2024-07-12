@@ -1,27 +1,16 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+}
+
 .searchField {
   display: flex;
   justify-content: center;
   gap: 10px;
   width: 100%;
   padding: 0 5px;
-}
-
-.searchFieldInput {
-  display: block;
-  width: 100%;
-  max-width: 650px;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  font-size: 1em;
-}
-
-.header {
-  height: 80px;
-  background-color: #454545;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
 }
 
 .secondBlock {

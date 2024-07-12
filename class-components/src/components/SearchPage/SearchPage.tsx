@@ -3,7 +3,9 @@ import { libraryApi } from "../../api/libraryApi";
 import Loader from "../Loader/Loader";
 import ErrorBtn from "../Error/ErrorBtn";
 import BookItem from "../BookItem/BookItem";
-import SearchForm from "../SearchForm/SearchForm";
+// import SearchForm from "../SearchForm/SearchForm";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 import styles from "./Search.module.css";
 
 type Book = {
@@ -56,12 +58,8 @@ const SearchPage = () => {
   };
 
   return (
-    <>
-      <header className={styles.header}>
-        <div className={styles.searchField}>
-          <SearchForm onSearchValueSubmit={handleSearchValueSubmit} />
-        </div>
-      </header>
+    <div className={styles.wrapper}>
+      <Header onSearchValueSubmit={handleSearchValueSubmit} />
       <ErrorBtn />
       {!loaded ? <Loader /> : null}
       <div className={styles.secondBlock}>
@@ -76,7 +74,8 @@ const SearchPage = () => {
           />
         ))}
       </div>
-    </>
+      <Footer />
+    </div>
   );
 };
 
