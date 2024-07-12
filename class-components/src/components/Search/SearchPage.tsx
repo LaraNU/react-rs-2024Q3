@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { libraryApi } from "../../api/libraryApi";
 import Loader from "../Loader/Loader";
-import Error from "../Error/Error";
+import ErrorBtn from "../Error/ErrorBtn";
 import BookItem from "../BookItem/BookItem";
 import SearchForm from "../SearchForm/SearchForm";
 import styles from "./Search.module.css";
@@ -62,7 +62,7 @@ const SearchPage = () => {
           <SearchForm onSearchValueSubmit={handleSearchValueSubmit} />
         </div>
       </header>
-      <Error />
+      <ErrorBtn />
       {!loaded ? <Loader /> : null}
       <div className={styles.secondBlock}>
         {books.map((book) => (
