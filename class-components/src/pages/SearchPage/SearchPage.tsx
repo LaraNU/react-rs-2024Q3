@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { libraryApi } from "../../api/libraryApi";
-import Loader from "../Loader/Loader";
-import ErrorBtn from "../Error/ErrorBtn";
-import BookItem from "../BookItem/BookItem";
+import Loader from "../../components/Loader/Loader";
+import ErrorBtn from "../../components/Error/ErrorBtn";
+import BookItem from "../../components/BookItem/BookItem";
 // import SearchForm from "../SearchForm/SearchForm";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
 import styles from "./Search.module.css";
 
 type Book = {
