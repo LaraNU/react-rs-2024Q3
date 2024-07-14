@@ -6,7 +6,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/search" element={<SearchPage />} />
+        <Route path="/" element={<SearchPage />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>

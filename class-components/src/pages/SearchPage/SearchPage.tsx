@@ -3,7 +3,6 @@ import { libraryApi } from "../../api/libraryApi";
 import Loader from "../../components/Loader/Loader";
 import ErrorBtn from "../../components/Error/ErrorBtn";
 import BookItem from "../../components/BookItem/BookItem";
-// import SearchForm from "../SearchForm/SearchForm";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import styles from "./Search.module.css";
@@ -17,8 +16,6 @@ type Book = {
 
 const SearchPage = () => {
   const [q, setQ] = useState<string>("");
-  // const [limit, setLimit] = useState<number>(10);
-  // const [page, setPage] = useState<number>(1);
   const [books, setBooks] = useState<Array<Book>>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
 
