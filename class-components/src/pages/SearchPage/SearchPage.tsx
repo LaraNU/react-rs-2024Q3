@@ -68,6 +68,7 @@ const SearchPage = () => {
             }}
             src={`https://covers.openlibrary.org/b/isbn/${book.isbn[0]}-L.jpg`}
             key={book.isbn[0]}
+            alt={book.title}
           />
         ))}
       </div>
