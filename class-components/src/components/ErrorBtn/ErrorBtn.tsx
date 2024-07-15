@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./Error.module.css";
+import styles from "./ErrorBtn.module.css";
 
 const ErrorBtn = () => {
   const [hasError, setError] = useState<boolean>(false);
