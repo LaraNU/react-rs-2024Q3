@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { libraryApi } from "../../api/libraryApi";
 import Loader from "../../components/Loader/Loader";
-import ErrorBtn from "../../components/Error/ErrorBtn";
+import ErrorBtn from "../../components/ErrorBtn/ErrorBtn";
 import BookItem from "../../components/BookItem/BookItem";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
