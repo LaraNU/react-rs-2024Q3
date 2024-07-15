@@ -2,14 +2,15 @@ import SearchForm from "../SearchForm/SearchForm";
 import styles from "./Header.module.css";
 
 type HeaderProps = {
-  onSearchValueSubmit: (value: string) => void;
+  onSubmit: (value: string) => void;
+  searchVal: string;
 };
 
-const Header = ({ onSearchValueSubmit }: HeaderProps) => {
+const Header = ({ onSubmit, searchVal }: HeaderProps) => {
   return (
     <header className={styles.header}>
       <div className={styles.searchField}>
-        <SearchForm onSearchValueSubmit={onSearchValueSubmit} />
+        <SearchForm onSearchValueSubmit={onSubmit} searchValue={searchVal} />
       </div>
     </header>
   );

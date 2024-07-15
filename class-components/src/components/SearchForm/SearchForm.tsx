@@ -1,13 +1,23 @@
-import { type FormEvent, useState, ChangeEvent } from "react";
+import { type FormEvent, type ChangeEvent, useState, useEffect } from "react";
 import styles from "./SearchForm.module.css";
 
 type Props = {
   onSearchValueSubmit: (searchName: string) => void;
+  searchValue: string;
 };
 
-const SearchForm = ({ onSearchValueSubmit }: Props) => {
-  const valueFromLocalStorage = localStorage.getItem("lastSearch");
-  const [inputValue, setInputValue] = useState(valueFromLocalStorage || "");
+const SearchForm = ({ onSearchValueSubmit, searchValue }: Props) => {
+  const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    const valueFromLocalStorage = localStorage.getItem("lastSearch");
+
+    if (valueFromLocalStorage) {
+      setInputValue(valueFromLocalStorage);
+    } else {
+      setInputValue(searchValue);
+    }
+  }, []);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,7 +31,7 @@ const SearchForm = ({ onSearchValueSubmit }: Props) => {
   return (
     <form className={styles.searchField} onSubmit={handleSubmit}>
       <input
-        type="text"
+        type="search"
         className={styles.searchFieldInput}
         onChange={handleSearchChange}
         value={inputValue}

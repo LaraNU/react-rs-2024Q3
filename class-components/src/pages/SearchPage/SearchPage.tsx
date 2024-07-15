@@ -5,7 +5,7 @@ import ErrorBtn from "../../components/ErrorBtn/ErrorBtn";
 import BookItem from "../../components/BookItem/BookItem";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import styles from "./Search.module.css";
+import styles from "./SearchPage.module.css";
 
 type Book = {
   key: string | "not";
@@ -21,23 +21,12 @@ const SearchPage = () => {
 
   useEffect(() => {
     const valueFromLocalStorage = localStorage.getItem("lastSearch");
-
     if (valueFromLocalStorage) {
       loadDataBooks(valueFromLocalStorage);
     } else {
-      libraryApi.getBooks("harry").then((data) => {
-        setQ(data.q);
-        setBooks(data.docs);
-        setLoaded(true);
-      });
+      loadDataBooks("harry");
     }
   }, []);
-
-  useEffect(() => {
-    if (q) {
-      loadDataBooks(q);
-    }
-  }, [q]);
 
   const loadDataBooks = (searchValueLS: string) => {
     setLoaded(false);
@@ -52,11 +41,12 @@ const SearchPage = () => {
 
   const handleSearchValueSubmit = (value: string) => {
     setQ(value);
+    loadDataBooks(value);
   };
 
   return (
     <div className={styles.wrapper}>
-      <Header onSearchValueSubmit={handleSearchValueSubmit} />
+      <Header onSubmit={handleSearchValueSubmit} searchVal={q} />
       <ErrorBtn />
       {!loaded ? <Loader /> : null}
       <div className={styles.secondBlock}>

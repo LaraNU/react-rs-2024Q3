@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "./ErrorBtn.module.css";
 
 const ErrorBtn = () => {
-  const [hasError, setError] = useState<boolean>(false);
+  const [hasError, setError] = useState(false);
 
   const throwError = () => {
     setError(true);

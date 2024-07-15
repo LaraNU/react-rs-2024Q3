@@ -7,15 +7,6 @@
   width: 100vw;
 }
 
-.searchFieldInput {
-  display: block;
-  width: 100%;
-  max-width: 650px;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  font-size: 1em;
-}
-
 .searchField {
   display: flex;
   justify-content: center;
