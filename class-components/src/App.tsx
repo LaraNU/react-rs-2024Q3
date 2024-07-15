@@ -1,16 +1,20 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import NoPage from "./pages/NoPage/NoPage";
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <SearchPage />,
+  },
+  {
+    path: "/*",
+    element: <NoPage />,
+  },
+]);
+
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<SearchPage />} />
-        <Route path="*" element={<NoPage />} />
-      </Routes>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
