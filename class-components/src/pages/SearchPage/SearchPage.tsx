@@ -15,7 +15,6 @@ type Book = {
 };
 
 const SearchPage = () => {
-  const [q, setQ] = useState<string>("");
   const [books, setBooks] = useState<Array<Book>>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
 
@@ -31,7 +30,6 @@ const SearchPage = () => {
   const loadDataBooks = (searchValueLS: string) => {
     setLoaded(false);
     libraryApi.getBooks(searchValueLS).then((data) => {
-      setQ(data.q);
       setBooks(data.docs);
       setLoaded(true);
 
@@ -40,13 +38,12 @@ const SearchPage = () => {
   };
 
   const handleSearchValueSubmit = (value: string) => {
-    setQ(value);
     loadDataBooks(value);
   };
 
   return (
     <div className={styles.wrapper}>
-      <Header onSubmit={handleSearchValueSubmit} searchVal={q} />
+      <Header onSubmit={handleSearchValueSubmit} />
       <ErrorBtn />
       {!loaded ? <Loader /> : null}
       <div className={styles.secondBlock}>
@@ -54,7 +51,7 @@ const SearchPage = () => {
           <BookItem
             post={{
               title: book.title,
-              author_name: book.author_name,
+              author_name: book.author_name.map((author) => author + " "),
             }}
             src={`https://covers.openlibrary.org/b/isbn/${book.isbn[0]}-L.jpg`}
             key={book.isbn[0]}

@@ -3,10 +3,9 @@ import styles from "./SearchForm.module.css";
 
 type Props = {
   onSearchValueSubmit: (searchName: string) => void;
-  searchValue: string;
 };
 
-const SearchForm = ({ onSearchValueSubmit, searchValue }: Props) => {
+const SearchForm = ({ onSearchValueSubmit }: Props) => {
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
@@ -14,8 +13,6 @@ const SearchForm = ({ onSearchValueSubmit, searchValue }: Props) => {
 
     if (valueFromLocalStorage) {
       setInputValue(valueFromLocalStorage);
-    } else {
-      setInputValue(searchValue);
     }
   }, []);
 

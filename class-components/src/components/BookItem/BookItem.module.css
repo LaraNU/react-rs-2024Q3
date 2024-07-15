@@ -8,6 +8,7 @@
   width: 280px;
   justify-content: space-evenly;
   background-color: #f0f0f0;
+  padding: 10px 5px;
 }
 
 .imgContainer {
@@ -24,4 +25,12 @@
 .title {
   text-align: center;
   font-weight: 500;
+  height: fit-content;
+  overflow: hidden;
+}
+
+.authorName {
+  text-align: center;
+  height: 5vh;
+  overflow: hidden;
 }

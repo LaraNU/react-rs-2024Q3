@@ -3,14 +3,13 @@ import styles from "./Header.module.css";
 
 type HeaderProps = {
   onSubmit: (value: string) => void;
-  searchVal: string;
 };
 
-const Header = ({ onSubmit, searchVal }: HeaderProps) => {
+const Header = ({ onSubmit }: HeaderProps) => {
   return (
     <header className={styles.header}>
       <div className={styles.searchField}>
-        <SearchForm onSearchValueSubmit={onSubmit} searchValue={searchVal} />
+        <SearchForm onSearchValueSubmit={onSubmit} />
       </div>
     </header>
   );
