@@ -1,13 +1,12 @@
 const urlSearchParamsBooks = new URLSearchParams({
   fields: "title,author_name,key,isbn,availability",
-  page: `${1}`,
   limit: `${9}`,
 });
 
 export const libraryApi = {
-  async getBooks(q: string) {
+  async getBooks(q: string, page: string) {
     const response = await fetch(
-      `https://openlibrary.org/search.json?q=${q}&${urlSearchParamsBooks.toString()}`,
+      `https://openlibrary.org/search.json?q=${q}&${urlSearchParamsBooks.toString()}&page=${page}`,
     );
     const books = await response.json();
     return books;
