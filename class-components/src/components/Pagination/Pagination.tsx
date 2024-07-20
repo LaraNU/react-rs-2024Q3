@@ -1,92 +1,89 @@
-import { useEffect, useState } from "react";
 import styles from "./Pagination.module.css";
 
 type PaginationProps = {
-  pageNumbers: number;
-  numPage: (searchName: string) => void;
-  start: number;
+  numLinks: number[];
+  onCurrentNum: (searchName: number) => void;
+  currentPage: string;
 };
 
-const Pagination = ({ pageNumbers, numPage }: PaginationProps) => {
-  const [numLinks, setNumLinks] = useState<Array<number>>([]);
-  const [page, setPage] = useState(1);
+const Pagination = ({
+  numLinks,
+  onCurrentNum,
+  currentPage,
+}: PaginationProps) => {
   const DOTS = "...";
+  const numCurrentPage = Number(currentPage);
+  const lastPage = numLinks[numLinks.length - 1];
+  const minNumOfPages = 3;
 
-  useEffect(() => {
-    getNumbersPages(pageNumbers);
-  }, [page, pageNumbers]);
-
-  const getNumbersPages = (pageNumbers: number) => {
-    const pagesNumber = [];
-    for (let i = page; i <= pageNumbers; i++) {
-      pagesNumber.push(i);
-    }
-    console.log(page, " click");
-    setNumLinks(pagesNumber);
+  const handlePageChange = (currentPage: number) => {
+    onCurrentNum(currentPage);
   };
 
-  const onClickPage = (page: number) => {
-    console.log(page, "onclickpage");
-    setPage(page);
-    numPage(page.toString());
+  const handlePageChangeBack = () => {
+    if (numCurrentPage > 1) {
+      onCurrentNum(numCurrentPage - 1);
+    }
+  };
+
+  const handlePageChangeNext = () => {
+    if (numCurrentPage < lastPage) {
+      onCurrentNum(numCurrentPage + 1);
+    }
   };
 
   return (
     <div className={styles.pagination}>
-      <a href="#">&laquo;</a>
-      {numLinks.length < 5 &&
+      <a
+        className={numCurrentPage === 1 ? styles.nonActive : ""}
+        onClick={() => handlePageChangeBack()}
+        href="#"
+      >
+        &laquo;
+      </a>
+      {numLinks.length <= minNumOfPages &&
         numLinks.slice(0, numLinks.length).map((number, index) => (
           <a
-            onClick={() => onClickPage(number)}
-            className={number === page ? styles.active : ""}
+            onClick={() => handlePageChange(number)}
+            className={number === numCurrentPage ? styles.active : ""}
             key={index}
           >
             {number}
           </a>
         ))}
 
-      {numLinks.length > 5 &&
-        numLinks.slice(0, 5).map((number, index) => (
+      {numLinks.length > minNumOfPages &&
+        numLinks.slice(0, minNumOfPages).map((number, index) => (
           <a
-            onClick={() => onClickPage(number)}
-            className={number === page ? styles.active : ""}
+            onClick={() => handlePageChange(number)}
+            className={number === numCurrentPage ? styles.active : ""}
             key={index}
           >
             {number}
           </a>
         ))}
 
-      <div className={styles.dots}>{DOTS}</div>
-      {numLinks.length > 5 &&
+      {lastPage - numCurrentPage > minNumOfPages ? (
+        <div className={styles.dots}>{DOTS}</div>
+      ) : null}
+
+      {numLinks.length > minNumOfPages &&
         numLinks.slice(-1).map((number, index) => (
           <a
-            className={styles.link}
-            onClick={() => onClickPage(number)}
+            className={number === numCurrentPage ? styles.active : ""}
+            onClick={() => handlePageChange(number)}
             key={index}
           >
             {number}
           </a>
         ))}
-      {/* {numLinks.slice(0, 5).map((number, index) => (
-        <a
-          onClick={() => onClickPage(number)}
-          className={number === page ? styles.active : ""}
-          key={index}
-        >
-          {number}
-        </a>
-      ))}
-      <div className={styles.dots}>{DOTS}</div>
-      {numLinks.slice(-1).map((number, index) => (
-        <a
-          className={styles.link}
-          onClick={() => onClickPage(number)}
-          key={index}
-        >
-          {number}
-        </a>
-      ))} */}
-      <a href="#">&raquo;</a>
+      <a
+        className={numCurrentPage === lastPage ? styles.nonActive : ""}
+        onClick={() => handlePageChangeNext()}
+        href="#"
+      >
+        &raquo;
+      </a>
     </div>
   );
 };

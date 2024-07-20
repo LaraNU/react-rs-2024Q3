@@ -1,5 +1,5 @@
 const urlSearchParamsBooks = new URLSearchParams({
-  fields: "title,author_name,key,isbn,availability",
+  fields: "title,author_name,key,availability,cover_i",
   limit: `${9}`,
 });
 

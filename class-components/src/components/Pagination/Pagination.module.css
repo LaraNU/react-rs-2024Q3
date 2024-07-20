@@ -21,3 +21,8 @@
   background-color: #ddd;
   cursor: pointer;
 }
+
+.pagination .nonActive {
+  pointer-events: none;
+  color: #a7a7a7;
+}
