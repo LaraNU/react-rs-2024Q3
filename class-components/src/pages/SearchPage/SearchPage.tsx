@@ -7,6 +7,7 @@ import BookItem from "../../components/BookItem/BookItem";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import Pagination from "@/components/Pagination/Pagination";
+import BookDetails from "@/components/BookDetails/BookDetails";
 import styles from "./SearchPage.module.css";
 
 type Book = {
@@ -14,6 +15,15 @@ type Book = {
   title: string | "not";
   author_name: Array<string> | ["not"];
   cover_i: number;
+};
+
+type DetailedBook = {
+  key: string | "not";
+  title: string | "not";
+  author_name: Array<string> | ["not"];
+  cover_i: number;
+  first_sentence: Array<string>;
+  first_publish_year: number;
 };
 
 const SearchPage = () => {
@@ -25,6 +35,9 @@ const SearchPage = () => {
   const [numFoundPages, setNumFound] = useState(0);
   const [page, setPage] = useState(searchParams.get("page") || "1");
   const [numLinks, setNumLinks] = useState<Array<number>>([]);
+
+  const [book, setBook] = useState<Array<DetailedBook>>([]);
+  const [openCard, setOpenCard] = useState(false);
 
   useEffect(() => {
     const valueFromLocalStorage = localStorage.getItem("lastSearch");
@@ -77,23 +90,57 @@ const SearchPage = () => {
     setSearchParams({ page: num.toString() });
   };
 
+  const handleClick = (state: boolean) => {
+    setOpenCard(state);
+  };
+
+  const handleValueBookItem = (title: string) => {
+    setLoaded(false);
+    libraryApi.getBook(title).then((data) => {
+      setBook(data.docs);
+      setLoaded(true);
+      handleClick(true);
+    });
+    setSearchParams({ page: page, book: title });
+  };
+
   return (
     <div className={styles.wrapper}>
       <Header onSubmit={handleSearchValueSubmit} />
       <ErrorBtn />
       {!loaded ? <Loader /> : null}
-      <div className={styles.secondBlock}>
-        {books.map((book) => (
-          <BookItem
-            post={{
-              title: book.title,
-              author_name: book.author_name,
-            }}
-            src={`https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`}
-            key={book.key}
-            alt={book.title}
-          />
-        ))}
+      <div className={styles.secondBlockWrapper}>
+        <div className={styles.secondBlock}>
+          {books.map((book) => (
+            <BookItem
+              onClickFun={() => handleValueBookItem(book.title)}
+              data-book={book.title}
+              post={{
+                title: book.title,
+                author_name: book.author_name,
+              }}
+              src={`https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`}
+              key={book.key}
+              alt={book.title}
+            />
+          ))}
+        </div>
+        {book.map(
+          (book) =>
+            openCard && (
+              <BookDetails
+                post={{
+                  title: book.title,
+                  author_name: book.author_name,
+                }}
+                src={`https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`}
+                key={book.key}
+                alt={book.title}
+                firstSentence={book.first_sentence}
+                firstPublishYear={book.first_publish_year}
+              />
+            ),
+        )}
       </div>
       <Pagination
         onCurrentNum={handlePage}

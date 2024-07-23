@@ -7,11 +7,18 @@ type BookProps = {
   };
   src: string;
   alt: string;
+  "data-book": string;
+  onClickFun: (el: string) => void;
+  key: string;
 };
 
 const BookItem = (props: BookProps) => {
   return (
-    <div className={styles.post}>
+    <div
+      onClick={() => props.onClickFun(props.post.title)}
+      data-book={props["data-book"]}
+      className={styles.post}
+    >
       <div className={styles.imgContainer}>
         <img src={props.src} alt={props.alt} className={styles.img}></img>
       </div>

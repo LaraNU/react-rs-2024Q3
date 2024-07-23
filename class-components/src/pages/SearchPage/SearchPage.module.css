@@ -18,6 +18,11 @@
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(3, 1fr);
+}
+
+.secondBlockWrapper {
+  display: flex;
+  gap: 15px;
   margin: 20px 0;
 }
 
@@ -28,5 +33,5 @@ input:focus {
 li {
   list-style: none;
   margin-bottom: 20px;
-  border-bottom: 1px solid #454545;
+  border-bottom: 1px solid #b5b5b5;
 }
