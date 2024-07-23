@@ -1,0 +1,30 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.noPageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.noPageNumber {
+  font-size: 8em;
+  font-weight: 500;
+}
+
+.noPageText {
+  font-size: 3em;
+  font-weight: 400;
+}
+
+.noPageBtn {
+  cursor: pointer;
+  color: rgb(255, 85, 33);
+  transition: 0.5s;
+}
