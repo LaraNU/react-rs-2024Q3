@@ -10,6 +10,9 @@ import Pagination from "@/components/Pagination/Pagination";
 import BookDetails from "@/components/BookDetails/BookDetails";
 import styles from "./SearchPage.module.css";
 
+import { useDispatch } from "react-redux";
+import { openCardSlice } from "@/store/cardStatusSlice";
+
 type Book = {
   key: string | "not";
   title: string | "not";
@@ -28,6 +31,7 @@ type DetailedBook = {
 
 const SearchPage = () => {
   const limitPage = 9;
+  const dispatch = useDispatch();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [books, setBooks] = useState<Array<Book>>([]);
@@ -90,16 +94,13 @@ const SearchPage = () => {
     setSearchParams({ page: num.toString() });
   };
 
-  const handleClick = (state: boolean) => {
-    setOpenCard(state);
-  };
-
   const handleValueBookItem = (title: string) => {
     setLoaded(false);
     libraryApi.getBook(title).then((data) => {
       setBook(data.docs);
       setLoaded(true);
-      handleClick(true);
+      setOpenCard(true);
+      dispatch(openCardSlice(openCard));
     });
     setSearchParams({ page: page, book: title });
   };
