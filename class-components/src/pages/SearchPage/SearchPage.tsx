@@ -6,12 +6,12 @@ import ErrorBtn from "../../components/ErrorBtn/ErrorBtn";
 import BookItem from "../../components/BookItem/BookItem";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import Pagination from "@/components/Pagination/Pagination";
-import BookDetails from "@/components/BookDetails/BookDetails";
+import Pagination from "../../components/Pagination/Pagination";
+import BookDetails from "../../components/BookDetails/BookDetails";
 import styles from "./SearchPage.module.css";
 
 import { useDispatch } from "react-redux";
-import { openCardSlice } from "@/store/cardStatusSlice";
+import { openCardSlice } from "../../store/cardStatusSlice";
 
 type Book = {
   key: string | "not";
