@@ -1,20 +1,14 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import SearchPage from "./pages/SearchPage/SearchPage";
-import NoPage from "./pages/NoPage/NoPage";
+import { wrapper } from "./store/store";
+import { useRouter } from "next/router";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <SearchPage />,
-  },
-  {
-    path: "/*",
-    element: <NoPage />,
-  },
-]);
+const App = () => {
+  const router = useRouter();
 
-function App() {
-  return <RouterProvider router={router} />;
-}
+  const handleNavigation = () => {
+    router.push("/some-other-page");
+  };
 
-export default App;
+  return <button onClick={handleNavigation}>Go to Another Page</button>;
+};
+
+export default wrapper.withRedux(App);

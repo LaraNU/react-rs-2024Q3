@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useRouter } from "next/router";
 import { libraryApi } from "../../api/libraryApi";
 import Loader from "../../components/Loader/Loader";
 import ErrorBtn from "../../components/ErrorBtn/ErrorBtn";
@@ -33,11 +33,12 @@ const SearchPage = () => {
   const limitPage = 9;
   const dispatch = useDispatch();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const { page = "1", book: searchBook } = router.query;
+
   const [books, setBooks] = useState<Array<Book>>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
   const [numFoundPages, setNumFound] = useState(0);
-  const [page, setPage] = useState(searchParams.get("page") || "1");
   const [numLinks, setNumLinks] = useState<Array<number>>([]);
 
   const [book, setBook] = useState<Array<DetailedBook>>([]);
@@ -47,9 +48,9 @@ const SearchPage = () => {
     const valueFromLocalStorage = localStorage.getItem("lastSearch");
 
     if (valueFromLocalStorage) {
-      loadDataBooks(valueFromLocalStorage, page);
+      loadDataBooks(valueFromLocalStorage, page as string);
     } else if (valueFromLocalStorage === null) {
-      loadDataBooks("harry", page);
+      loadDataBooks("harry", page as string);
     }
 
     countNumbersPages(numFoundPages, Number(page));
@@ -83,15 +84,18 @@ const SearchPage = () => {
   };
 
   const handleSearchValueSubmit = (value: string) => {
-    setPage("1");
-    loadDataBooks(value, "1");
-    setSearchParams({ page: "1" });
+    router.push({
+      pathname: router.pathname,
+      query: { page: "1", book: value },
+    });
     localStorage.setItem("lastSearch", value);
   };
 
   const handlePage = (num: number) => {
-    setPage(num.toString());
-    setSearchParams({ page: num.toString() });
+    router.push({
+      pathname: router.pathname,
+      query: { page: num.toString(), book: searchBook },
+    });
   };
 
   const handleValueBookItem = (title: string) => {
@@ -102,7 +106,10 @@ const SearchPage = () => {
       setOpenCard(true);
       dispatch(openCardSlice(openCard));
     });
-    setSearchParams({ page: page, book: title });
+    router.push({
+      pathname: router.pathname,
+      query: { page: page, book: title },
+    });
   };
 
   return (
@@ -146,7 +153,7 @@ const SearchPage = () => {
       <Pagination
         onCurrentNum={handlePage}
         numLinks={numLinks}
-        currentPage={page}
+        currentPage={page as string}
       />
       <Footer />
     </div>
