@@ -84,6 +84,7 @@ const SearchPage = () => {
   };
 
   const handleSearchValueSubmit = (value: string) => {
+    loadDataBooks(value, "1");
     router.push({
       pathname: router.pathname,
       query: { page: "1", book: value },
