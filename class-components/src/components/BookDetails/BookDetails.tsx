@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "./BookDetails.module.css";
 
 import { useDispatch } from "react-redux";
-import { closeCard } from "@/store/cardStatusSlice";
+import { closeCard } from "../../store/cardStatusSlice";
 
 type BookProps = {
   post: {

@@ -19,17 +19,20 @@ const urlSearchParamsBook = new URLSearchParams({
 const baseUrl = "https://openlibrary.org/search.json";
 
 export const apiSlice = createApi({
+  reducerPath: "apiSlice",
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     getBooks: builder.query({
       query: ({ q, page }) =>
-        `${baseUrl}?q=${q}&${urlSearchParamsBooks.toString()}&page=${page}`,
+        `?q=${q}&${urlSearchParamsBooks.toString()}&page=${page}`,
     }),
     getBook: builder.query({
       query: (title: string) =>
-        `${baseUrl}?title=${title}&lang=uk&${urlSearchParamsBook.toString()}`,
+        `?title=${title}&lang=uk&${urlSearchParamsBook.toString()}`,
     }),
   }),
 });
+
+export const { useGetBooksQuery, useGetBookQuery } = apiSlice;
 
 export default apiSlice;
