@@ -1,6 +1,9 @@
 import { useState } from "react";
 import styles from "./BookDetails.module.css";
 
+import { useDispatch } from "react-redux";
+import { closeCard } from "@/store/cardStatusSlice";
+
 type BookProps = {
   post: {
     title: string;
@@ -13,10 +16,13 @@ type BookProps = {
 };
 
 const BookDetails = (props: BookProps) => {
+  const dispatch = useDispatch();
+
   const [detailsCard, setDetailsCard] = useState(true);
 
   const handleClick = () => {
     setDetailsCard(false);
+    dispatch(closeCard(detailsCard));
   };
 
   return (
