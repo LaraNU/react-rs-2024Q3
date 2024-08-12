@@ -10,7 +10,7 @@
     "lint:fix": "eslint ./src --fix",
     "format": "prettier --write ./src",
     "preview": "vite preview",
-    "prepare": "husky"
+    "prepare": "cd .. && husky react-forms/.husky"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
