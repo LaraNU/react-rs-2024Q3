@@ -1,0 +1,17 @@
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  width: 100%;
+}
+
+.label {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.input {
+  min-width: 150px;
+}
