@@ -11,4 +11,32 @@
 .error {
   margin: 0;
   color: rgb(146, 0, 0);
+  font-size: 14px;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  width: 100%;
+}
+
+.label {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  text-align: left;
+}
+
+.btnSubmit {
+  background-color: #004a89;
+  color: white;
+  transition: 0.5s;
+}
+
+.btnSubmit:hover {
+  background-color: #b6ddff;
+  color: rgb(0, 0, 0);
+  border: #b6ddff;
 }

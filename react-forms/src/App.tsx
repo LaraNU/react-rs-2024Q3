@@ -2,6 +2,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import MainPage from './pages/MainPage/MainPage';
 import UncontrolledForm from './pages/UncontrolledForm/UncontrolledForm';
 import ReactHookForm from './pages/ReactHookForm/ReactHookForm';
+import { Provider } from 'react-redux';
+import store from './store/store';
 import './App.css';
 
 const router = createBrowserRouter([
@@ -20,7 +22,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  );
 }
 
 export default App;
